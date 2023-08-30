@@ -26,8 +26,7 @@ const formReducer = (state = initialState, action) => {
                     [action.payload.fieldName]: action.payload.isVisible,
                 },
             };
-        case 'SUBMIT_FORM':
-            // Handle form submission and validation
+        case 'SUBMIT_FORM':  // Handle form submission and validation
             return state;
         default:
             return state;

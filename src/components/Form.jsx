@@ -15,7 +15,7 @@ const Form = () => {
 
     useEffect(() => {
         setErrorMessages([]); // Clear error messages whenever the form data changes
-        setSuccessMessage([])
+        setSuccessMessage([]) // Clear the success message when the dropdown toggled
     }, [formData]);
 
     const handleInputChange = (fieldName, value) => {
@@ -37,7 +37,7 @@ const Form = () => {
         if (Object.keys(errors).length === 0) {
             dispatch(submitForm());
             setErrorMessages([]); // Clear error messages if submission is successful
-            setSuccessMessage('Form submitted successfully!');
+            setSuccessMessage('Form submitted successfully!'); // Show the success message if the submission is successful
         } else {
             const errorMessages = Object.values(errors);
             setErrorMessages(errorMessages);
@@ -46,54 +46,56 @@ const Form = () => {
     }
 
     return (
-        <div className="p-4 rounded-lg border-gray-600 border-2">
-            <label className="block mb-2">Are you employed?</label>
-            <select
-                className="block w-full p-2 mb-4"
-                value={formData.employed}
-                onChange={e => {
-                    handleInputChange('employed', e.target.value);
-                    updateCompanyNameVisibility();
-                }}
-            >
-                <option value="">Select an option</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
+        <>
+            <div className="p-4 rounded-lg w-80  border-gray-600 border-2">
+                <label className="block mb-2">Are you employed?</label>
+                <select
+                    className="block w-full p-2 mb-4"
+                    value={formData.employed}
+                    onChange={e => {
+                        handleInputChange('employed', e.target.value);
+                        updateCompanyNameVisibility();
+                    }}
+                >
+                    <option value="">Select an option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
 
-            {fieldVisibility && formData.employed === 'Yes' && (
-                <div className="mb-4">
-                    <label className="block mb-2">Company Name:</label>
-                    <input
-                        type="text"
-                        className="block w-full p-2 border rounded"
-                        value={formData.companyName}
-                        onChange={e => handleInputChange('companyName', e.target.value)}
-                    />
+                {fieldVisibility && formData.employed === 'Yes' && (
+                    <div className="mb-4">
+                        <label className="block mb-2">Company Name:</label>
+                        <input
+                            type="text"
+                            className="block w-full p-2 border rounded"
+                            value={formData.companyName}
+                            onChange={e => handleInputChange('companyName', e.target.value)}
+                        />
+                    </div>
+                )}
+
+                {errorMessages.length > 0 && (
+                    <div className="mt-4 text-red-500">
+                        {errorMessages.map((errorMsg, index) => (
+                            <p key={index} className='mb-1'>
+                                {errorMsg}
+                            </p>
+                        ))}
+                    </div>
+                )}
+
+                <div className="mt-4 mb-2 text-green-500">
+                    {successMessage && <p>{successMessage}</p>}
                 </div>
-            )}
 
-            {errorMessages.length > 0 && (
-                <div className="mt-4 text-red-500">
-                    {errorMessages.map((errorMsg, index) => (
-                        <p key={index} className='mb-1'>
-                            {errorMsg}
-                        </p>
-                    ))}
-                </div>
-            )}
-
-            <div className="mt-4 text-green-500">
-                {successMessage && <p>{successMessage}</p>}
+                <button
+                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+                    onClick={handleSubmit}
+                >
+                    Submit
+                </button>
             </div>
-
-            <button
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                onClick={handleSubmit}
-            >
-                Submit
-            </button>
-        </div>
+        </>
     );
 };
 
